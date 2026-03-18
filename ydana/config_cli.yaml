@@ -1,0 +1,156 @@
+# ---------------------------------- posible optional arguments ---------------------------------- #
+opt_args:
+    config-path: &config_path
+        flags: ["-cf", "--config-file"]
+        dest: "config_file"
+        type: str
+        help: "Path to the configuration file."
+    inputs: &inputs
+        flags: ["-i", "--inputs"]
+        dest: "inputs"
+        type: str
+        nargs: "+"
+        default: ~
+        help: "Input ROOT or Parquet files. One or more: file, directory, glob, or 'file.root:treepath'. Omit to use filesets defined in the config YAML."
+    datasets: &datasets
+        flags: ["-ds", "--datasets"]
+        dest: "datasets"
+        type: str
+        nargs: "*"
+        default: ~
+        help: "Named dataset(s) to load from the 'filesets:' section of the config. Omit to load all defined filesets. Mutually exclusive with -i/--inputs."
+    output-path: &output_path
+        flags: ["-o", "--outputpath"]
+        dest: "outfolder"
+        type: str
+        default: "./results"
+        help: "Directory to save the output files. If the directory does not exist, it will be created automatically."
+    tag: &tag
+        flags: ["-t", "--tag"]
+        dest: "tag"
+        type: str
+        default: ""
+        help: "Tag to be added to the output file names."
+    max-files: &max_files
+        flags: ["--maxfiles"]
+        dest: "maxfiles"
+        type: int
+        default: -1
+        help: "Maximum number of files to read. -1 is default to read all available files."
+    max-events: &max_events
+        flags: ["--maxevents"]
+        dest: "maxevents"
+        type: int
+        default: -1
+        help: "Maximum number of events to read. -1 is default to read all available events."
+    tree-name: &tree_name
+        flags: ["-tr", "--tree"]
+        dest: "tree_name"
+        type: str
+        default: ~
+        help: "TTree path inside the ROOT files (e.g. 'dtNtupleProducer/DTTREE'). Can also be embedded in -i as 'file.root:treepath'. Falls back to 'treename:' in the fileset config."
+    save: &save
+        flags: ["-s", "--save"]
+        dest: "save"
+        action: "store_true"
+        help: "Save the products of the analysis. Default is False."
+    cores-number: &cores_number
+        flags: ["-c", "--cores"]
+        dest: "ncores"
+        type: int
+        default: -1
+        help: "Type of parallelization. It refers to the possible Dask schedulers: -1 for dask default (multithreading), 1 for no parallelization, and >1 for multiprocessing with the specified number of cores. Default is -1."
+    per-partition: &per_partition
+        flags: ["--per-partition"]
+        dest: "per_partition"
+        action: "store_true"
+        help: "Write one output file per dask partition instead of a single merged file. Default is False."
+    in-format: &in_format
+        flags: ["--in-format"]
+        dest: "in_format"
+        type: str
+        choices: ["root", "parquet"]
+        default: "root"
+        help: "Format of the input files (default: root)."
+    out-format: &out_format
+        flags: ["--out-format"]
+        dest: "out_format"
+        type: str
+        choices: ["root", "parquet"]
+        default: "root"
+        help: "Format for the dumped output files (default: root)."
+    scheduler-address: &scheduler_address
+        flags: ["--scheduler-address"]
+        dest: "scheduler_address"
+        type: str
+        default: ~
+        help: "Dask distributed scheduler address (e.g. 'tcp://host:8786'). When set, tasks are dispatched to the cluster instead of running locally."
+    overwrite: &overwrite
+        flags: ["-f", "--force-overwrite"]
+        dest: "overwrite"
+        action: "store_true"
+        help: "Overwrite existing per-partition output files instead of skipping them. Default is False (resume-safe)."
+    nverbose: &nverbose
+        flags: ["--no-verbose"]
+        dest: "verbose"
+        action: "store_false"
+        help: "Disable verbose logging output. Default is True (verbose)."
+
+# ---------------------------------- posible analysis ---------------------------------------- #
+pos_args:
+    fill-histos:
+        name: "fill-histos"
+        help: "Fill predefined ROOT histograms based on event-by-event information from DT NTuple files."
+        func: "ydana.analysis.histos_filler.fill_histos"
+        opt_args:
+            config-path: *config_path
+            inputs: *inputs
+            datasets: *datasets
+            output-path: *output_path
+            tag: *tag
+            max-files: *max_files
+            tree-name: *tree_name
+            cores-number: *cores_number
+            per-partition: *per_partition
+            overwrite: *overwrite
+            scheduler-address: *scheduler_address
+            in-format: *in_format
+            verbose: *nverbose
+    dump-events:
+        name: "dump-events"
+        help: "Load DT NTuple files and export the event array. Choose --in-format and --out-format."
+        func: "ydana.analysis.events_dumper.dump_events"
+        opt_args:
+            config-path: *config_path
+            inputs: *inputs
+            datasets: *datasets
+            output-path: *output_path
+            tag: *tag
+            max-files: *max_files
+            tree-name: *tree_name
+            in-format: *in_format
+            out-format: *out_format
+            cores-number: *cores_number
+            overwrite: *overwrite
+            scheduler-address: *scheduler_address
+            verbose: *nverbose
+    merge-histos:
+        name: "merge-histos"
+        help: "Merge per-partition histogram ROOT files into a single ROOT output."
+        func: "ydana.analysis.histos_merger.merge_histos"
+        opt_args:
+            inputs: *inputs
+            output-path: *output_path
+            config-path: *config_path
+            tag: *tag
+            verbose: *nverbose
+    merge-roots:
+        name: "merge-roots"
+        help: "Merge per-partition event ROOT files into a single ROOT output."
+        func: "ydana.analysis.roots_merger.merge_roots"
+        opt_args:
+            inputs: *inputs
+            output-path: *output_path
+            config-path: *config_path
+            tag: *tag
+            verbose: *nverbose
