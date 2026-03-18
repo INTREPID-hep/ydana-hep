@@ -1,0 +1,51 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dtpr/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'dtpr/**'
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ruff only
+        run: pip install ruff
+
+      - name: Check code formatting with ruff
+        run: ruff format --check ydana examples tests
+
+      - name: Check code linting with ruff
+        run: ruff check ydana examples tests
+
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install project dependencies
+        run: pip install . && pip install pytest
+
+      - name: Run tests with pytest
+        run: pytest

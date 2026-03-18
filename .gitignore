@@ -1,0 +1,13 @@
+*pyc
+*__pycache__*
+*results*
+*env*/
+*.egg-info*
+*main.sh*
+*ROOT*
+*.vscode*
+*_build
+*pkl
+*pytest*
+*.lock
+*ruff*

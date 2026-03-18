@@ -1,0 +1,75 @@
+[project]
+name = "ydana-hep"
+version = "0.1.0"
+description = "YAML-Driven Dask-Awkward Ntuple Analyzer for declarative columnar workflows"
+readme = "README.md"
+authors = [
+  { name = "Daniel Estrada", email = "destrada@cern.ch" }
+]
+maintainers = [
+  { name = "Daniel Estrada", email = "destrada@cern.ch" }
+]
+requires-python = ">=3.9"
+
+dependencies = [
+  "uproot>=5.3",
+  "awkward>=2.6",
+  "coffea>=2024.3.0",
+  "dask>=2024.1.0",
+  "dask-awkward>=2024.1.0",
+  "distributed>=2024.1.0",
+  "hist>=2.7",
+  "numpy>=1.23,<2.0",
+  "natsort>=8.4",
+  "PyYAML>=5.4.1",
+  "tqdm>=4.6",
+  "graphviz>=0.20",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinxcontrib-mermaid",
+    "sphinx-autobuild",
+    "nbsphinx"
+]
+dev = [
+    "pytest",
+    "ruff"
+]
+
+[project.scripts]
+ydana = "ydana.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ydana"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+# maximum line length to 100.
+line-length = 100
+
+[tool.ruff.lint]
+# Enable specific rules (Pyflakes, Pycodestyle, isort)
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+# Use double quotes and respect the line length.
+quote-style = "double"
+
+[project.urls]
+Documentation = "https://intrepid-hep.github.io/ydana-hep"
+Repository = "https://github.com:uniovi-hepex/ydana-hep/ydana-hep"
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
