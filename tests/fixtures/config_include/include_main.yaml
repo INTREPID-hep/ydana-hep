@@ -1,0 +1,4 @@
+simple_key: simple
+included_map: !include include_map_a.yaml
+merged_map: !include [include_map_a.yaml, include_map_b.yaml]
+included_list: !include include_list.yaml
