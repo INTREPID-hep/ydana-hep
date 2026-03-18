@@ -34,7 +34,8 @@ docs = [
     "sphinx-design",
     "sphinxcontrib-mermaid",
     "sphinx-autobuild",
-    "nbsphinx"
+    "nbsphinx",
+    "pandoc"
 ]
 dev = [
     "pytest",

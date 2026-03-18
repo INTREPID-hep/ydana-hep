@@ -27,17 +27,19 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Poetry
-        uses: abatilo/actions-poetry@v3
+      - name: Install pandoc
+        uses: pandoc/actions/setup@v1
+        with:
+          version: 3.1
 
-      - name: Install dependencies with Poetry
+      - name: Install dependencies with pip
         run: |
-          poetry install --with docs
+          pip install . && pip install .[docs]
 
       - name: Build docs
         run: |
           cd docs
-          poetry run make html
+          make html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
