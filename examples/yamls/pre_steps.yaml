@@ -1,0 +1,50 @@
+# pre-steps: ordered transformations applied to the loaded event array.
+#
+# The pre-steps: value must be a mapping — each key IS the step name
+#
+# Step body keys:
+#   type       — "selector" or "preprocessor"
+#   target     — (selector only) collection name for particle-level filtering; absent = event-level
+#   expr       — inline Python with {events, ak} in scope.
+#                  selector    : must be an expression returning bool[nevents] or bool[nevents×nparticles]
+#                  preprocessor: must be a statement that mutates events in-place,
+#                                e.g. events['field'] = value
+#                                For nested collections: events['col'] = ak.with_field(events['col'], value, 'key')
+#   src        — dotted import path to a callable:
+#                  selector    : fn(events) -> ak.Array[bool]   (bool mask, not applied yet)
+#                  preprocessor: fn(events) -> None             (mutates events in-place)
+#   needs      — list of step names that must run first (default [])
+#   on         — dataset name (str) or list of names to restrict this step to;
+#                omit to apply to every dataset / plain inputs
+#                e.g.  on: DY          or   on: [DY, Zprime]
+
+# ---- level 0: independent steps ----
+
+# Compute digi BX from time (integer floor-divide by 25)
+compute-digi-BX:
+  type: preprocessor
+  expr: "events['digis'] = ak.with_field(events['digis'], events['digis']['time'] // 25, 'BX')"
+
+# Compute centered TP BX (_BX - 20)
+compute-tp-BX:
+  type: preprocessor
+  expr: "events['tps'] = ak.with_field(events['tps'], events['tps']['BX'] - 20, 'BX')"
+
+filter-no-muons:
+  type: selector
+  target: genmuons
+  src: cuts.filter_genmuons_pdgid
+
+compute-muon-DR:
+  type: preprocessor
+  src: "preprocessors.add_genmuon_dR"
+
+# ---- level 1: depend on level-0 preprocessors ----
+
+# Filter TPs: quality >= 0
+filter-tps:
+  type: selector
+  target: tps
+  expr: "(events['tps']['quality'] >= 0)"
+  needs: [compute-tp-BX]
+

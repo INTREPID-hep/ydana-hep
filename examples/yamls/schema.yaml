@@ -1,0 +1,75 @@
+# Schema: defines what to read and how to structure it into an Awkward record.
+#
+# Top-level mapping rules:
+#   key: "branch_name"   → event-level scalar branch
+#   key: 42              → event-level constant field (no branch)
+#   key:                 → particle collection
+#     attr: "branch"     → attribute from ROOT branch
+#     attr: -999         → attribute constant (no branch)
+
+# event-level scalars
+number: "event_eventNumber"
+
+# ---- particle collections ----
+digis:
+  wh:   "digi_wheel"
+  sc:   "digi_sector"
+  st:   "digi_station"
+  sl:   "digi_superLayer"
+  l:    "digi_layer"
+  w:    "digi_wire"
+  time: "digi_time"
+
+segments:
+  wh:           "seg_wheel"
+  sc:           "seg_sector"
+  st:           "seg_station"
+  phi:          "seg_posGlb_phi"
+  eta:          "seg_posGlb_eta"
+  nHits_phi:    "seg_phi_nHits"
+  nHits_z:      "seg_z_nHits"
+  t0_phi:       "seg_phi_t0"
+  pos_locx_sl1: "seg_posLoc_x_SL1"
+  pos_locx_sl3: "seg_posLoc_x_SL3"
+
+tps:
+  wh:        "ph2TpgPhiEmuAm_wheel"
+  sc:        "ph2TpgPhiEmuAm_sector"
+  st:        "ph2TpgPhiEmuAm_station"
+  sl:        "ph2TpgPhiEmuAm_superLayer"
+  phi:       "ph2TpgPhiEmuAm_phi"
+  phiB:      "ph2TpgPhiEmuAm_phiB"
+  posLoc_x:  "ph2TpgPhiEmuAm_posLoc_x"
+  dirLoc_phi: "ph2TpgPhiEmuAm_dirLoc_phi"
+  quality:   "ph2TpgPhiEmuAm_quality"
+  rpcFlag:   "ph2TpgPhiEmuAm_rpcFlag"
+  BX:       "ph2TpgPhiEmuAm_BX"
+
+genmuons:
+  pt:    "gen_pt"
+  eta:   "gen_eta"
+  phi:   "gen_phi"
+  charge: "gen_charge"
+  pdgId: "gen_pdgId"
+
+fwshowers:
+  wh:       "ph2Shower_wheel"
+  sc:       "ph2Shower_sector"
+  st:       "ph2Shower_station"
+  sl:       "ph2Shower_superlayer"
+  nDigis:   "ph2Shower_ndigis"
+  BX:       "ph2Shower_BX"
+  min_wire: "ph2Shower_min_wire"
+  max_wire: "ph2Shower_max_wire"
+  avg_pos:  "ph2Shower_avg_pos"
+  avg_time: "ph2Shower_avg_time"
+
+simhits:
+  wh:           "simHit_wheel"
+  sc:           "simHit_sector"
+  st:           "simHit_station"
+  sl:           "simHit_superLayer"
+  l:            "simHit_layer"
+  w:            "simHit_wire"
+  process_type: "simHit_processType"
+  particle_type: "simHit_particleType"

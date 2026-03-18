@@ -1,0 +1,28 @@
+# filesets: named test datasets read from tests/ntuples/.
+#
+# Paths are relative to the project root — override with absolute paths
+# or CLI ``-i`` for production runs.
+
+DY:
+  treename: "dtNtupleProducer/DTTREE"
+  files:
+    - "../ntuples/DY/DTDPGNtuple_15_1_0_pre2_Phase2_WShower_ShowAlgo1_Thr6_Simulation_1.root"
+    - "../ntuples/DY/DTDPGNtuple_15_1_0_pre2_Phase2_WShower_ShowAlgo1_Thr6_Simulation_2.root"
+    - "../ntuples/DY/DTDPGNtuple_15_1_0_pre2_Phase2_WShower_ShowAlgo1_Thr6_Simulation_3.root"
+    - "../ntuples/DY/DTDPGNtuple_15_1_0_pre2_Phase2_WShower_ShowAlgo1_Thr6_Simulation_4.root"
+    - "../ntuples/DY/DTDPGNtuple_15_1_0_pre2_Phase2_WShower_ShowAlgo1_Thr6_Simulation_5.root"
+  metadata:
+    label: "DY — Phase2 WShower ShowAlgo1 Thr6 simulation"
+    version: "15_1_0_pre2"
+
+Zprime:
+  treename: "dtNtupleProducer/DTTREE"
+  files:
+    - "../ntuples/Zprime/DTDPGNtuple_12_4_2_Phase2Concentrator_thr6_Simulation_1.root"
+    - "../ntuples/Zprime/DTDPGNtuple_12_4_2_Phase2Concentrator_thr6_Simulation_2.root"
+    - "../ntuples/Zprime/DTDPGNtuple_12_4_2_Phase2Concentrator_thr6_Simulation_3.root"
+    - "../ntuples/Zprime/DTDPGNtuple_12_4_2_Phase2Concentrator_thr6_Simulation_4.root"
+    - "../ntuples/Zprime/DTDPGNtuple_12_4_2_Phase2Concentrator_thr6_Simulation_5.root"
+  metadata:
+    label: "Z' — Phase2 Concentrator thr6 simulation"
+    version: "12_4_2"

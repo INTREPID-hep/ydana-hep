@@ -1,0 +1,17 @@
+histo_sources:
+  # define the source modules of the histograms
+  - histograms
+  # - Others if needed...
+  # ...
+
+histo_names:
+  # Histogram to fill - Uncomment or add histograms as needed.
+  # They should exist in any of the source modules
+  # ============ leading_mu ============ #
+  - LeadingMuon_pt
+  - LeadingMuon_eta
+  # =========== subleading_mu ========== #
+  - SubLeadingMuon_pt
+  - SubLeadingMuon_eta
+  # ============ efficiency example =========== #
+  - Muon_pt20_eff

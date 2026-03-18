@@ -1,0 +1,17 @@
+#---------------- This is the main configuration file ----------------#
+# This file is loaded by the run script and contains the main configuration
+# for the analysis.  It is organized into sections, each of which can be
+# included from separate YAML files for better modularity and readability.
+# The sections are:
+#   filesets     — named test datasets read from tests/ntuples/
+#   schema       — defines what to read and how to structure it into an Awkward record
+#   pre-steps    — ordered transformations applied to the loaded event array
+#   histograms   — definitions of histograms to produce
+
+filesets: !include filesets.yaml
+
+Schema: !include schema.yaml
+
+pre-steps: !include pre_steps.yaml
+
+histograms: !include histograms.yaml
